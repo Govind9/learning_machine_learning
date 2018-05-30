@@ -1,0 +1,49 @@
+Collaborative filtering:
+	A collaborative filtering algorithm usually works by searching a large group of people and finding a smaller set with tastes similar to yours. It looks at other things they like and combines them to create a ranked list of suggestions.
+	
+	First you collect people's preferences. You should always map their preference for any particular thing with a numeric value.
+	
+	After we have such data, then it is time to calculate how similar are any two people in the group in terms of their choices. This can be done by calculating what is called as a similarity score. This can be calculated using the following techniques:
+	
+	Euclidean Distance:
+		For this we need to take things that people have rated commonly. We need to take these items (eg movies) as axes to a graph (take two movies at a time, one as X-axis and and other as Y-axis); based on what a particular person rated each movie, plot that person on this graph. Once every person is plotted. We can calculate the distance between them. The more the distance, less is the similarity. We can calculate this distance between two people for any number of items by using the following equation:
+		Total Distance = Square Root(
+							(Difference between rating of item1)^2 +
+							(Difference between rating of item2)^2 +
+							.
+							.
+							(Difference between rating of itemn)^2
+						)
+		So similarity = 1/Total distance. 
+		But in order to avoid any divide by zero exceptions, just add 1 to the total distance:
+		Similarity = 1/ (Total distance + 1)
+		This way similarity will be a number between (0, 1]
+		
+		This is all well and good but this technique depends entirely on the magnitude of each rating. For example, if a person is generous in giving ratings to an item then that person would be considered relatively dissimilar to a more strict person, even though they might be having similar ratings for each item when scalled properly i.e. normalized to the same level of strictness/generosity.
+		
+	Pearson Correlation:
+		This is a much more sophisticated method and solves the above described problem. Here also we need to plot a graph, but this time the axes are the two people  being compared. We need to plot in this graph, a point for each item based on its rating given by the two persons/axes. Once the plot is done, we see how close the plot points are to a straight line. The closer they are, the more similar are the persons being compared. Perfect line suggests absolute similarity.
+		
+		The formula for this require the following things:
+		sum1: sum of rating of all items by person A.
+		sum2: sum of rating of all items by person B.
+		n = total number of items.
+		sum1Sq = sum of square of rating of all items by person A.
+		sum2Sq = sum of square of rating of all items by person B.
+		PSum = sum of product of rating of each item by person A and B.
+		
+		num=pSum-(sum1*sum2/n)
+		den=sqrt((sum1Sq-pow(sum1,2)/n)*(sum2Sq-pow(sum2,2)/n))
+		if den==0: return 0
+		r=num/den
+		
+		This function will return a value between –1 and 1. A value of 1 means that the two people have exactly the same ratings for every item.
+		
+	After we have this, we can basically find the similarity of our main person with everyother person and sort the list out. Now in order to find recommendations, we basically take any new item that is to recommended to us, and we calculate the weight of that item by multiplying the rating given to it by each other critic with their similarity to the main person, adding this up and then finally dividing it with the sum of similarities of all critics whose weight has been taken.
+
+	Similarly we can also do what items are similar. So if you bought something, what else would you like to buy. This can be done  by considering who bought a particular item and what all items they liked after it. And how similar they are to you is also considered. Nothing is to be done in terms of the mechanism, only thing we need to change is the dictionary being used. Instead of basing it on the people, we must base it on the items.
+		
+		
+		
+		
+		
